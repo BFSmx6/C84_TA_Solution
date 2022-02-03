@@ -68,39 +68,7 @@ export default class SearchScreen extends Component {
         });
     }
   };
-  fetchMoreTransactions = async text => {
-    var enteredText = text.toUpperCase().split("");
-    text = text.toUpperCase();
 
-    const { lastVisibleTransaction, allTransactions } = this.state;
-    if (enteredText[0] === "B") {
-      const query = await db
-        .collection("transactions")
-        .where("bookId", "==", text)
-        .startAfter(lastVisibleTransaction)
-        .limit(10)
-        .get();
-      query.docs.map(doc => {
-        this.setState({
-          allTransactions: [...this.state.allTransactions, doc.data()],
-          lastVisibleTransaction: doc
-        });
-      });
-    } else if (enteredText[0] === "S") {
-      const query = await db
-        .collection("transactions")
-        .where("bookId", "==", text)
-        .startAfter(this.state.lastVisibleTransaction)
-        .limit(10)
-        .get();
-      query.docs.map(doc => {
-        this.setState({
-          allTransactions: [...this.state.allTransactions, doc.data()],
-          lastVisibleTransaction: doc
-        });
-      });
-    }
-  };
   
   renderItem = ({ item, i }) => {
     var date = item.date.toDate().toString().split(" ") .splice(0, 4).join(" ");
